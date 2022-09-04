@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<div id="wrapper">
+<header>
+    <div id="navArea">
+        <nav>
+            <div class="inner">
+
+            </div>
+        </nav>
+        <div class="toggle-btn-circle">
+            <div class="toggle_btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="scheduleMain">
+<h1 id="title">信州大学軽音楽部 コマ表</h1>
+<h2 id="ym">
+    <?php 
+        require('index.php');
+        echo $weekterm; 
+    ?>
+</h2>
+    <a id="prev" href="<?php echo $_SERVER['SCRIPT_NAME'] . '?date=' . $pre_week;?>" ><span class="material-icons md-24">keyboard_arrow_left</span>先週</a>
+    <a id="next" href="<?php echo $_SERVER['SCRIPT_NAME'] . '?date=' . $next_week;?>">翌週<span class="material-icons md-24">keyboard_arrow_right</span></a>
+    <table id="cale" border="1">
+        <?php echo $table; ?>
+    </table>
+</main>
+</div>
+</body>
+</html>
