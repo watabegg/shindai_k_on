@@ -17,19 +17,30 @@
     <h3>
     <?php
         require('./index.php');
-        echo $days .' '. $times;
     ?>
     </h3>
     <form method="POST" action="booking.php">
     <table>
         <tr>
+            <td align="right">予約日：</td>
+            <td><?php echo $dayselect; ?></td>
+        </tr>
+        <tr>
+            <td align="right">予約時間：</td>
+            <td>
+                <?php
+                    echo $timeselect;
+                ?>
+            </td>
+        </tr>
+        <tr>
             <td align="right">登録名：</td>
-            <td><input type="text" name="regist_name" maxlength="30"></td>
+            <td><input type="text" name="regist_name" maxlength="30" placeholder="例：ギター個人練習" required></td>
         </tr>
         <tr>
             <td align="right">パート：</td>
             <td>
-                <select multiple="multiple" class="multiple-select">
+                <select multiple="multiple" class="multiple-select" name="part[]" required>
                     <option value="1" selected>バンド</option>
                     <option value="2">ボーカル</option>
                     <option value="3">ギター</option>
@@ -53,11 +64,11 @@
         </tr>
         <tr>
             <td align="right">予約者名：</td>
-            <td><input type="text" name="name" maxlength="20"></td>
+            <td><input type="text" name="name" maxlength="20" required></td>
         </tr>
         <tr>
             <td align="right">パスワード：</td>
-            <td><input type="password" name="password"></td>
+            <td><input type="password" name="password" required></td>
         </tr>
         <tr>
             <td></td>
@@ -71,7 +82,7 @@
 </body>
 <script>
     $(function () {
-        $('select').multipleSelect({
+        $('.multiple-select').multipleSelect({
             width: 250,
             formatSelectAll: function() {
                 return 'すべて';
@@ -82,5 +93,5 @@
             placeholder: '使用パートを選択してください'
         });
     });
-    </script>
+</script>
 </html>

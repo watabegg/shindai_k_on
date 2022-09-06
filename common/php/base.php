@@ -23,7 +23,7 @@
     }
 
     function isToday($year, $manth, $day) {
-        $today = getToday('Y-n-j');
+        $today = getToday();
         if ($today == $year. "-". $manth. "-". $day) {
             return true;
         }
@@ -62,12 +62,13 @@
     function getYNJ($year, $month, $day, $i=0) {
         $ymd = getNthDay($year, $month, $day, '+'.$i.'day');
         $y = substr($ymd, 0, 4);
-        $n = sprintf("%01d", substr($ymd, 4, 2));
-        $j = sprintf("%01d", substr($ymd, 6, 2));
-        $t = $y. '年'. $n. '月'. $j. '日';
-        $slt = $y. '/'. $n. '/'. $j;
+        $m = substr($ymd, 4, 2);
+        $d = substr($ymd, 6, 2);
+        $t = $y. '年'. $m. '月'. $d. '日';
+        $slt = $y. '/'. $m. '/'. $d;
+        $hyt = $y. '-'. $m. '-'. $d;
 
-        return [$t, $slt, $y, $n, $j];
+        return [$t, $slt, $hyt, $y, $m, $d];
     }
 
 ?>

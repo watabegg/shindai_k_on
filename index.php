@@ -12,16 +12,16 @@
     $pre_week = getNthDay($year, $month, $day, '-1 week');
 
     
-    list($t, $slt, $y, $n, $j) = getYNJ($year, $month, $day);
+    list($t, $slt, $hyt, $y, $n, $j) = getYNJ($year, $month, $day);
     $weekterm = $t.'~';
 
-    list($t, $slt, $y, $n, $j) = getYNJ($year, $month, $day, 6);
+    list($t, $slt, $hyt, $y, $n, $j) = getYNJ($year, $month, $day, 6);
     $weekterm .= $t;
 
     $table = '<tr><th></th>'; //
 
     for($i = 0; $i < 7; $i++) {
-        list($t, $slt, $y, $n, $j) = getYNJ($year, $month, $day, $i);
+        list($t, $slt, $hyt, $y, $n, $j) = getYNJ($year, $month, $day, $i);
         if (isToday($y, $n, $j)) {
             $table .= '<th class="today" class="'.$Enweek[$i].'">'.$slt.'<br>'.$week[$i].'</th>';
         }
@@ -34,12 +34,12 @@
     for($i = 0; $i < count($time); $i++) {
         $table .= '<tr><th class="'. $row_style[$i % 2] . '">' .$time[$i].'</th>';
         for($k = 0; $k < 7; $k++) {
-            list($t, $slt, $y, $n, $j) = getYNJ($year, $month, $day, $k);
+            list($t, $slt, $hyt, $y, $n, $j) = getYNJ($year, $month, $day, $k);
             if (isToday($y, $n, $j)) {
-                $table .= '<td class="today" class="'.$Enweek[$k].'"><a class="booking_window" href="./booking/index.html?day='.$slt.'&num='.$i.'">' .'×<br>予約を確認'.'</a></td>';
+                $table .= '<td class="today" class="'.$Enweek[$k].'"><a class="booking_window" href="./booking/index.html?day='.$hyt.'&num='.$i.'">' .'×<br>予約を確認'.'</a></td>';
             }
             else {
-                $table .= '<td class="'.$Enweek[$k].'"><a class="booking_window" href="./booking/index.html?day='.$slt.'&num='.$i.'">'.'〇<br>予約する'.'</a></td>';
+                $table .= '<td class="'.$Enweek[$k].'"><a class="booking_window" href="./booking/index.html?day='.$hyt.'&num='.$i.'">'.'〇<br>予約する'.'</a></td>';
             }
         }
         $table .= '</tr>';
