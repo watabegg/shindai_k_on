@@ -59,7 +59,7 @@
         return $next_prev->format('Ymd');
     }
 
-    function getYNJ($year, $month, $day, $i=0) {
+    function getYMD($year, $month, $day, $i=0) {
         $ymd = getNthDay($year, $month, $day, '+'.$i.'day');
         $y = substr($ymd, 0, 4);
         $m = substr($ymd, 4, 2);
@@ -69,6 +69,20 @@
         $hyt = $y. '-'. $m. '-'. $d;
 
         return [$t, $slt, $hyt, $y, $m, $d];
+    }
+
+    function isBorA($year, $month, $day){
+        $today = getToday('Ymd');
+        $days = $year . $month . $day;
+        if($today == $days){
+            return 'today';
+        }
+        elseif($today > $days){
+            return 'Past';
+        }
+        elseif($today < $days){
+            return 'Future';
+        }
     }
 
 ?>
