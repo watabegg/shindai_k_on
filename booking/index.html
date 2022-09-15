@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title></title>
     <link href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css" rel="stylesheet">
+    <link href="../common/css/base.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 </head>
@@ -22,28 +23,26 @@
     <form method="POST" action="booking.php">
     <table>
         <tr>
-            <td align="right">予約日：</td>
+            <td class="menu">予約日：</td>
             <td><?php echo $dayselect; ?></td>
         </tr>
         <tr>
-            <td align="right">予約時間：</td>
+            <td class="menu">予約時間：</td>
             <td>
-                <?php
-                    echo $timeselect;
-                ?>
+                <?php echo $timeselect; ?>
             </td>
         </tr>
         <tr>
-            <td align="right">登録名：</td>
+            <td class="menu">登録名：</td>
             <td><input type="text" name="regist_name" maxlength="30" placeholder="例：ギター個人練習" required></td>
         </tr>
         <tr>
-            <td align="right">パート：</td>
+            <td class="menu">パート：</td>
             <td>
                 <select multiple="multiple" class="multiple-select" name="part[]" required>
-                    <option value="1" selected>バンド</option>
-                    <option value="2">ボーカル</option>
-                    <option value="3">ギター</option>
+                    <option value="1" selected>ボーカル</option>
+                    <option value="2">ギター(マーシャル)</option>
+                    <option value="3">ギター(ジャズコーラス)</option>
                     <option value="4">ベース</option>
                     <option value="5">ドラム</option>
                     <option value="6">キーボード</option>
@@ -52,43 +51,44 @@
             </td>
         </tr>
         <tr>
-            <td align="right">他パート参加：</td>
+            <td class="menu">他パート参加：</td>
             <td>
                 <input type="radio" name="otherpart" value="1">あり
                 <input type="radio" name="otherpart" value="0" checked>なし
             </td>
         </tr>
         <tr>
-            <td align="right">備考：</td>
+            <td class="menu">備考：</td>
             <td><textarea name="remark"></textarea></td>
         </tr>
         <tr>
-            <td align="right">予約者名：</td>
+            <td class="menu">予約者名：</td>
             <td><input type="text" name="name" maxlength="20" required></td>
         </tr>
         <tr>
-            <td align="right">パスワード：</td>
+            <td class="menu">パスワード：</td>
             <td><input type="password" name="password" required></td>
         </tr>
         <tr>
             <td></td>
             <td><input type="submit" value="予約"></td>
         </tr>
+    </table>
     </form>
-</table>
 </div>
 </main>
 </div>
 </body>
 <script>
     $(function () {
+        //$('.multiple-select').multipleSelect('checkAll');
         $('.multiple-select').multipleSelect({
             width: 250,
             formatSelectAll: function() {
-                return 'すべて';
+                return 'バンド練習';
             },
             formatAllSelected: function() {
-                return '全て選択されています';
+                return 'バンド練習';
             },
             placeholder: '使用パートを選択してください'
         });

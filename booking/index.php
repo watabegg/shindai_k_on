@@ -21,6 +21,6 @@
     }
     $timeselect .= '<option value='. count($time) .'>ユーザー入力(備考に記入してください)</option></select>';
 
-    $dayselect = '<input type="date" name="day" value="'. $days . '" required>'
+    $dayselect = '<input type="date" name="day" value="'. $days . '" required>';
 
 ?>
