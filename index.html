@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title></title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/common/css/base.css" rel="stylesheet">
 </head>
 <body>
-<div id="wrapper">
 <header>
     <div id="navArea">
         <nav>
@@ -24,7 +24,7 @@
     </div>
 </header>
 <main id="scheduleMain">
-<h1 id="title">信州大学軽音楽部 コマ表</h1>
+<h1 class="title">信州大学軽音楽部 コマ表</h1>
 <h2 id="ym">
     <?php 
         require('index.php');
@@ -37,6 +37,5 @@
         <?php echo $table; ?>
     </table>
 </main>
-</div>
 </body>
 </html>

@@ -7,7 +7,6 @@
     //$time =['7:30~9:00','9:00~10:30','10:40~12:10','12:10~13:30','13:30~15:00','15:10~16:40','16:50~18:20','18:30~20:00','20:00~21:30'];
     $localtimecsv = 'http://localhost/shindai_k_on/common/csv/time.csv'; //ローカル
     $timecsv = 'http://' . $_SERVER['HTTP_HOST'] . '/common/csv/time.csv';
-    $pracList = ['band', 'vocal', 'guiter', 'bass', 'drum', 'keyboard', 'other'];
 
     $timefile = fopen($localtimecsv, "r");
     $time = fgetcsv($timefile);
@@ -84,5 +83,4 @@
             return 'Future';
         }
     }
-
 ?>
