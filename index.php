@@ -2,50 +2,51 @@
     session_start();
     require('common/php/base.php');
 
-    $year_month_day = $_GET['date'] ?? getSunday();
+    $today = new DateTime();
 
-    $year = substr($year_month_day, 0, 4);
-    $month = sprintf("%01d", substr($year_month_day, 4, 2));
-    $day = sprintf("%01d", substr($year_month_day, 6, 2));
+    $Y_m_d = $_GET['date'] ?? getSunday();
 
-    $next_week = getNthDay($year, $month, $day, '+1 week');
-    $pre_week = getNthDay($year, $month, $day, '-1 week');
+    $next_week = getAnyDay($Y_m_d, 0, 'Ymd', '+1');
+    $pre_week = getAnyDay($Y_m_d, 0, 'Ymd', '-1');
 
-    
-    list($t, $slt, $hyt, $y, $m, $d) = getYMD($year, $month, $day);
-    $weekterm = $t.'~';
+    if($next_week > getAnyDay(getSunday(), 0, 'Ymd', '+3')){
+        $next_week_tag = '翌週<span class="material-icons md-24">keyboard_arrow_right</span>';
+    }
+    else{
+        $next_week_tag = '<a id="next" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$next_week.'">翌週<span class="material-icons md-24">keyboard_arrow_right</span></a>';
+    }
 
-    list($t, $slt, $hyt, $y, $m, $d) = getYMD($year, $month, $day, 6);
-    $weekterm .= $t;
+    if($pre_week < getAnyDay(getSunday(), 0, 'Ymd', '-1')){
+        $pre_week_tag = '<span class="material-icons md-24">keyboard_arrow_left</span>先週';
+    }
+    else{
+        $pre_week_tag = '<a id="prev" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$pre_week.'" ><span class="material-icons md-24">keyboard_arrow_left</span>先週</a>';
+    }
+
+    $weekterm = getAnyDay($Y_m_d, 0, 'Y年m月d日').'~' . getAnyDay($Y_m_d, 6, 'Y年m月d日');
 
     $table = '<tr><th></th>'; //
 
     for($i = 0; $i < 7; $i++) {
-        list($t, $slt, $hyt, $y, $m, $d) = getYMD($year, $month, $day, $i);
-        if(isBorA($y, $m, $d) == 'today'){
-            $table .= '<th class="today" class="'.$Enweek[$i].'">'.$slt.'('.$week[$i].')</th>';
-        }
-        elseif(isBorA($y, $m, $d) == 'Past'){
-            $table .= '<th class="Past" class="'.$Enweek[$i].'">'.$slt.'('.$week[$i].')</th>';
-        }
-        elseif(isBorA($y, $m, $d) == 'Future'){
-            $table .= '<th class="Future" class="'.$Enweek[$i].'">'.$slt.'('.$week[$i].')</th>';
-        }
+        list($y, $m, $d) = getAnyDay($Y_m_d, $i, 'split');
+        $slt = getAnyDay($Y_m_d, $i, 'Y/m/d');
+        $table .= '<th class="'.$Enweek[$i].'">'.$slt.'('.$week[$i].')</th>';
     }
     $table .= '</tr>';
 
     for($i = 0; $i < count($time); $i++) {
-        $table .= '<tr><th class="'. $row_style[$i % 2] . '">' .$time[$i].'</th>';
+        $table .= '<tr><th class="'. $row_style[$i % 2] . ' table_time">' .$time[$i].'</th>';
         for($k = 0; $k < 7; $k++) {
-            list($t, $slt, $hyt, $y, $m, $d) = getYMD($year, $month, $day, $k);
+            list($y, $m, $d) = getAnyDay($Y_m_d, $k, 'split');
+            $hyt = getAnyDay($Y_m_d, $k, 'Y-m-d');
             if(isBorA($y, $m, $d) == 'today'){
-                $table .= '<td class="today" class="'.$Enweek[$k].'"><a class="booking_window" href="./booking/index.html?day='.$hyt.'&num='.$i.'">' .'×<br>予約を確認'.'</a></td>';
+                $table .= '<td class="today"><a class="booking_window" href="./booking/index.html?day='.$hyt.'&num='.$i.'">' .'×<br>予約を確認'.'</a></td>';
             }
             elseif(isBorA($y, $m, $d) == 'Past'){
-                $table .= '<td class="Past" class="'.$Enweek[$k].'"><a class="booking_window" href="./booking/index.html?day='.$hyt.'&num='.$i.'">'.'〇<br>予約する'.'</a></td>';
+                $table .= '<td class="Past">'.'〇<br>予約する'.'</td>';
             }
             elseif(isBorA($y, $m, $d) == 'Future'){
-                $table .= '<td class="Future" class="'.$Enweek[$k].'"><a class="booking_window" href="./booking/index.html?day='.$hyt.'&num='.$i.'">'.'△<br>予約する,予約を確認'.'</a></td>';
+                $table .= '<td class="Future"><a class="booking_window" href="./booking/index.html?day='.$hyt.'&num='.$i.'">'.'△<br>予約する,予約を確認'.'</a></td>';
             }
         }
         $table .= '</tr>';

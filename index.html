@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title></title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="/common/css/base.css" rel="stylesheet">
+    <link href="./common/css/base.css" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -31,11 +31,13 @@
         echo $weekterm; 
     ?>
 </h2>
-    <a id="prev" href="<?php echo $_SERVER['SCRIPT_NAME'] . '?date=' . $pre_week;?>" ><span class="material-icons md-24">keyboard_arrow_left</span>先週</a>
-    <a id="next" href="<?php echo $_SERVER['SCRIPT_NAME'] . '?date=' . $next_week;?>">翌週<span class="material-icons md-24">keyboard_arrow_right</span></a>
+    <?php echo $pre_week_tag, $next_week_tag; ?>
     <table id="cale" border="1">
         <?php echo $table; ?>
     </table>
+
+    <a href="./manage/index.html">あ，こっちでーす</a>
+    <a href="./gig_booking/index.html">こっち２(ツー)</a>
 </main>
 </body>
 </html>

@@ -4,3 +4,16 @@
 .title {
     text-align: center;
 }
+.Sun {
+    color: #ff5479;
+}
+.Sat {
+    color: #0095ff;
+}
+.Past {
+    background-color: #c8c8c8c8;
+    pointer-events: none;
+}
+.today {
+    background-color: #ffffff
+}

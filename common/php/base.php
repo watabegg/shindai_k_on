@@ -52,6 +52,38 @@
         return $next_prev->format('Ymd');
     }
 
+    function isBorA($year, $month, $day){
+        $today = getToday('Ymd');
+        $days = $year . $month . $day;
+        if($today == $days){
+            return 'today';
+        }
+        elseif($today > $days){
+            return 'Past';
+        }
+        elseif($today < $days){
+            return 'Future';
+        }
+    }
+
+    //日付と形式から±n週w曜日の日付を$formatで出力($formatの入力対応はY-m-d,Y年m月d日,Y/m/d, Ymd,split)
+    function getAnyDay($Ymd, $w, $format='Y-m-d', $n='+0'){
+        global $Enweek;
+        $y = substr($Ymd, 0, 4);
+        $m = sprintf("%01d", substr($Ymd, 4, 2));
+        $d = sprintf("%01d", substr($Ymd, 6, 2));
+        $forYmd = $y. '-' .$m. '-' .$d;
+        $Anyday = new DateTime($Ymd. ' '.$n. ' weeks'. ' ' .$Enweek[$w]);
+        if($format == 'split'){
+            return [$Anyday->format('Y'), $Anyday->format('m'), $Anyday->format('d')];
+        }
+        else{
+            return $Anyday->format($format);
+        }
+    }
+
+    //一応置き場(多分使わないのでリリースで消す)
+    /*
     function getNthDay($year, $month, $day, $n) {
         $next_prev = new DateTime($year.'-'.$month.'-'.$day);
         $next_prev->modify($n);
@@ -69,18 +101,5 @@
 
         return [$t, $slt, $hyt, $y, $m, $d];
     }
-
-    function isBorA($year, $month, $day){
-        $today = getToday('Ymd');
-        $days = $year . $month . $day;
-        if($today == $days){
-            return 'today';
-        }
-        elseif($today > $days){
-            return 'Past';
-        }
-        elseif($today < $days){
-            return 'Future';
-        }
-    }
+    */
 ?>
