@@ -185,8 +185,9 @@
         else{
             foreach($part as $i){
                 $j = array_search($i, $prime_num);
-                $part_each .= $part_jp[$j] . ' ';
+                $part_each .= $part_jp[$j] . ', ';
             }
+            $part_each = substr($part_each, 0, -2);
         }
     
 
@@ -197,35 +198,35 @@
             <table>
                 <tr>
                     <td class="menu">予約日：</td>
-                    <td> $select_day </td>
+                    <td>$select_day</td>
                 </tr>
                 <tr>
                     <td class="menu">予約時間：</td>
-                    <td> $time[$select_time] </td>
+                    <td>$time[$select_time]</td>
                 </tr>
                 <tr>
                     <td class="menu">登録名：</td>
-                    <td> $regist_name </td>
+                    <td>$regist_name</td>
                 </tr>
                 <tr>
                     <td class="menu">パート：</td>
-                    <td> $part_each </td>
+                    <td>$part_each</td>
                 </tr>
                 <tr>
                     <td class="menu">他パート参加：</td>
-                    <td> $otherpart_jp[$otherpart] </td>
+                    <td>$otherpart_jp[$otherpart]</td>
                 </tr>
                 <tr>
                     <td class="menu">備考：</td>
-                    <td> $remark </td>
+                    <td>$remark</td>
                 </tr>
                 <tr>
                     <td class="menu">予約者名：</td>
-                    <td> $name </td>
+                    <td>$name</td>
                 </tr>
                 <tr>
                     <td class="menu">パスワード：</td>
-                    <td><b> $password_len </b></td>
+                    <td><b>$password_len</b></td>
                 </tr>
                 <tr>
                     <td></td>

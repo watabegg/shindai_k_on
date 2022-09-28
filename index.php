@@ -10,17 +10,17 @@
     $pre_week = getAnyDay($Y_m_d, 0, 'Ymd', '-1');
 
     if($next_week > getAnyDay(getSunday(), 0, 'Ymd', '+3')){
-        $next_week_tag = '翌週<span class="material-icons md-24">keyboard_arrow_right</span>';
+        $next_week_tag = '翌週<span class="material-symbols-outlined">navigate_next</span></span>';
     }
     else{
-        $next_week_tag = '<a id="next" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$next_week.'">翌週<span class="material-icons md-24">keyboard_arrow_right</span></a>';
+        $next_week_tag = '<a id="next" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$next_week.'">翌週<span class="material-symbols-outlined">navigate_next</span></a>';
     }
 
     if($pre_week < getAnyDay(getSunday(), 0, 'Ymd', '-1')){
-        $pre_week_tag = '<span class="material-icons md-24">keyboard_arrow_left</span>先週';
+        $pre_week_tag = '<span class="material-symbols-outlined">navigate_before</span>先週';
     }
     else{
-        $pre_week_tag = '<a id="prev" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$pre_week.'" ><span class="material-icons md-24">keyboard_arrow_left</span>先週</a>';
+        $pre_week_tag = '<a id="prev" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$pre_week.'" ><span class="material-symbols-outlined">navigate_before</span>先週</a>';
     }
 
     $weekterm = getAnyDay($Y_m_d, 0, 'Y年m月d日').'~' . getAnyDay($Y_m_d, 6, 'Y年m月d日');

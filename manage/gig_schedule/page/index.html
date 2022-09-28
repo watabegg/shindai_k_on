@@ -1,0 +1,42 @@
+<?php
+    require('../../common/php/base.php');
+
+    $gigid = $_GET['id'];
+
+    $select_gig = NULL;
+
+    $localdsn = 'mysql:dbname=reservation;host=localhost;charset=utf8';
+    $localuser = 'root';
+    $localpass = '';
+
+    try{
+        $dbh = new PDO($localdsn, $localuser, $localpass);
+        $res = $dbh->query("SELECT * FROM gig_booking WHERE id = $gigid");
+        $date = $res->fetchAll();
+
+        $select_gig = <<<_HTML_
+
+        _HTML_;
+    }
+    catch(PDOException $e){
+        print 'エラー' .PHP_EOL. $e->getMessage();
+    }
+?>
+<!doctype HTML>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link href="../common/css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+<header>
+</header>
+<main>
+    <?php echo $doingGig; ?>
+    <div id="newcreate">
+    </div>
+</main>
+</body>
+</html>
