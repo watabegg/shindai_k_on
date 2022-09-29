@@ -1,21 +1,21 @@
 <?php
-    require('../../common/php/base.php');
+    require('../../../common/php/base.php');
 
     $gigid = $_GET['id'];
 
     $select_gig = NULL;
 
-    $localdsn = 'mysql:dbname=reservation;host=localhost;charset=utf8';
-    $localuser = 'root';
-    $localpass = '';
-
     try{
         $dbh = new PDO($localdsn, $localuser, $localpass);
-        $res = $dbh->query("SELECT * FROM gig_booking WHERE id = $gigid");
-        $date = $res->fetchAll();
+        $res = $dbh->query("SELECT * FROM gig_booking WHERE id = '$gigid'");
+        $date = $res->fetch(PDO::FETCH_ASSOC);
 
         $select_gig = <<<_HTML_
-
+            <div class="view_date">
+                募集タイトル：{$date["title"]} <br>
+                募集期間：{$date["beginning"]}~{$date["deadline"]} <br>
+                施行期間：{$date["term_start"]}~{$date["term_end"]}
+            </div>
         _HTML_;
     }
     catch(PDOException $e){
@@ -34,9 +34,9 @@
 <header>
 </header>
 <main>
-    <?php echo $doingGig; ?>
-    <div id="newcreate">
-    </div>
+    <?php echo $select_gig; 
+    echo var_dump($date);
+    ?>
 </main>
 </body>
 </html>

@@ -8,6 +8,10 @@
     $localtimecsv = 'http://localhost/shindai_k_on/common/csv/time.csv'; //ローカル
     $timecsv = 'http://' . $_SERVER['HTTP_HOST'] . '/common/csv/time.csv';
 
+    $localdsn = 'mysql:dbname=reservation;host=localhost;charset=utf8';
+    $localuser = 'root';
+    $localpass = '';
+
     $timefile = fopen($localtimecsv, "r");
     $time = fgetcsv($timefile);
     fclose($timefile);
@@ -67,12 +71,9 @@
     }
 
     //日付と形式から±n週w曜日の日付を$formatで出力($formatの入力対応はY-m-d,Y年m月d日,Y/m/d, Ymd,split)
+    //これなんで動いてんのかよくわかんなくなってきた
     function getAnyDay($Ymd, $w, $format='Y-m-d', $n='+0'){
         global $Enweek;
-        $y = substr($Ymd, 0, 4);
-        $m = sprintf("%01d", substr($Ymd, 4, 2));
-        $d = sprintf("%01d", substr($Ymd, 6, 2));
-        $forYmd = $y. '-' .$m. '-' .$d;
         $Anyday = new DateTime($Ymd. ' '.$n. ' weeks'. ' ' .$Enweek[$w]);
         if($format == 'split'){
             return [$Anyday->format('Y'), $Anyday->format('m'), $Anyday->format('d')];

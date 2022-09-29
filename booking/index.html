@@ -72,10 +72,6 @@
         unlink($csv_name);
 
         list($booking_id, $select_day, $select_time, $regist_name, $part_pro, $otherpart, $remark, $name, $pass_hash) = $csv_date;
-
-        $localdsn = 'mysql:dbname=reservation;host=localhost;charset=utf8';
-        $localuser = 'root';
-        $localpass = '';
     
         try{
             $dbh = new PDO($localdsn, $localuser, $localpass);
