@@ -12,10 +12,14 @@
 }
 .Past {
     background-color: #c8c8c8c8;
-    pointer-events: none;
 }
 .today {
     background-color: #ffffff
+}
+.table_box{
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
 }
 .material-symbols-outlined {
     font-variation-settings:
