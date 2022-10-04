@@ -1,3 +1,70 @@
+<?php
+    require('../common/php/base.php');
+
+    $today = new DateTime();
+
+    $days = $_GET['day'] ?? $today->format('Y-m-d');
+    $num = $_GET['num'] ?? 0;
+    $times = $time[$num];
+
+    try{
+        $dbh = new PDO($dsn, $user, $pass);
+        $res = $dbh->query("SELECT booking_id, regist_name, part, otherpart, remark, name FROM booking WHERE day = '$days' AND time = '$num'");
+        $date = $res->fetchAll(PDO::FETCH_ASSOC);
+        $count = $res->rowCount();
+
+        $booking_confirm = NULL;
+
+        for($i=0; $i < $count; $i++){
+            $part_each = NULL;
+            if($date[$i]['part'] == 510510){
+                $part_each .= 'バンド';
+            }
+            else{
+                foreach(prime_fact($date[$i]['part']) as $prime){
+                    $j = array_search($prime, $prime_num);
+                    $part_each .= $part_jp[$j] . ',';
+                }
+                $part_each = rtrim($part_each, ',');
+            }
+            $k = $i + 1;
+            $booking_confirm .= <<<_HTML_
+                <div class="booking_confirm">
+                    <span>{$k}件目</span>
+                    <table>
+                        <tr>
+                            <td class="menu">登録名：</td>
+                            <td>{$date[$i]['regist_name']}</td>
+                        </tr>
+                        <tr>
+                            <td class="menu">パート：</td>
+                            <td>$part_each</td>
+                        </tr>
+                        <tr>
+                            <td class="menu">他パート参加：</td>
+                            <td>{$otherpart_jp[$date[$i]['otherpart']]}</td>
+                        </tr>
+                        <tr>
+                            <td class="menu">備考：</td>
+                            <td>{$date[$i]['remark']}</td>
+                        </tr>
+                        <tr>
+                            <td class="menu">予約者名：</td>
+                            <td>{$date[$i]['name']}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>予約を修正</td>
+                            <td>予約を削除</td>
+                        </tr>
+                    </table>
+                </div>
+            _HTML_;
+        }
+    }
+    catch(PDOException $e){
+    }
+?>
 <!doctype html>
 <html lang="ja">
 <head>
@@ -12,5 +79,6 @@
 <header>
 </header>
     <a href='http://localhost/shindai_k_on/index.html'>やるやん</a>
+    <?php echo $booking_confirm; ?>
 </body>
 </html>

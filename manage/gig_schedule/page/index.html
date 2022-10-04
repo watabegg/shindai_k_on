@@ -6,7 +6,7 @@
     $select_gig = NULL;
 
     try{
-        $dbh = new PDO($localdsn, $localuser, $localpass);
+        $dbh = new PDO($dsn, $user, $pass);
         $res = $dbh->query("SELECT * FROM gig_booking WHERE id = '$gigid'");
         $date = $res->fetch(PDO::FETCH_ASSOC);
 

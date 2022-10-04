@@ -4,7 +4,7 @@
     $doingGig = NULL;
 
     try{
-        $dbh = new PDO($localdsn, $localuser, $localpass);
+        $dbh = new PDO($dsn, $user, $pass);
         $res = $dbh->query("SELECT * FROM gig_booking");
         $date = $res->fetchAll();
         $count = $res->rowCount();

@@ -40,8 +40,8 @@
     $toweekSat = getAnyDay($Y_m_d, 6, 'Y-m-d');
 
     try{
-        $dbh = new PDO($localdsn, $localuser, $localpass);
-        $res = $dbh->query("SELECT booking_id, day, time, regist_name FROM booking WHERE day >= '$toweekSun' AND day <= '$toweekSat'");
+        $dbh = new PDO($dsn, $user, $pass);
+        $res = $dbh->query("SELECT booking_id, day, time, regist_name FROM booking WHERE day BETWEEN '$toweekSun' AND '$toweekSat'");
         $date = $res->fetchAll(PDO::FETCH_ASSOC);
         $count = $res->rowCount();
 
@@ -82,7 +82,7 @@
                         <td class="$table_class">
                             <div class="table_box">
                             <a class="booking_window" href="./confirm/index.html?day=$theday&num=$i">
-                                <div class="table_Symbol">
+                                <div class="table_Symbol parsonal">
                                     個人練習
                                 </div>
                                 <div class="table_some">
@@ -98,7 +98,7 @@
                         <td class="$table_class">
                             <div class="table_box">
                             <a class="booking_window" href="./booking/index.html?day=$theday&num=$i">
-                                <div class="table_Symbol">
+                                <div class="table_Symbol triangle">
                                     <span class="material-symbols-outlined">pentagon</span>
                                 </div>
                                 <div class="table_some">
@@ -116,7 +116,7 @@
                     <td class="$table_class">
                         <div class="table_box">
                         <a class="booking_window" href="./booking/index.html?day=$theday&num=$i">
-                            <div class="table_Symbol">
+                            <div class="table_Symbol circle">
                                 <span class="material-symbols-outlined">circle</span>
                             </div>
                             <div class="table_some">
@@ -134,7 +134,7 @@
                         <td class="$table_class">
                             <div class="table_box">
                             <a class="booking_window" href="./confirm/index.html?day=$theday&num=$i">
-                                <div class="table_Symbol">
+                                <div class="table_Symbol band_name">
                                     {$table_box2[$i][$theday]}
                                 </div>
                                 <div class="table_some">
@@ -151,7 +151,7 @@
                             <td class="$table_class">
                                 <div class="table_box">
                                 <a class="booking_window" href="./booking/index.html?day=$theday&num=$i">
-                                    <div class="table_Symbol">
+                                    <div class="table_Symbol triangle">
                                         <span class="material-symbols-outlined">pentagon</span>
                                     </div>
                                     <div class="table_some">
@@ -168,7 +168,7 @@
                             <td class="$table_class">
                                 <div class="table_box">
                                 <a class="booking_window" href="./confirm/index.html?day=$theday&num=$i">
-                                    <div class="table_Symbol">
+                                    <div class="table_Symbol parsonal">
                                         個人練習
                                     </div>
                                     <div class="table_some">
@@ -181,7 +181,6 @@
                     }
                 }
             }
-            //$table .= '<td class="today"><a class="booking_window" href="./booking/index.html?day='.$theday.'&num='.$i.'">' .'×<br>予約を確認'.'</a></td>';
         }
         $table .= '</tr>';
     }

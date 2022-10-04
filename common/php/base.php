@@ -4,13 +4,16 @@
     $Mweek = ['月','火','水','木','金','土','日'];
     $Enweek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     $row_style = ['even', 'odd'];
+    $part_jp = ['ボーカル', 'ギター(マーシャル)', 'ギター(ジャズコーラス)', 'ベース', 'ドラム', 'キーボード', 'その他'];
+    $otherpart_jp = ['なし', 'あり'];
+    $prime_num = [2,3,5,7,11,13,17];
     //$time =['7:30~9:00','9:00~10:30','10:40~12:10','12:10~13:30','13:30~15:00','15:10~16:40','16:50~18:20','18:30~20:00','20:00~21:30'];
     $localtimecsv = 'http://localhost/shindai_k_on/common/csv/time.csv'; //ローカル
     $timecsv = 'http://' . $_SERVER['HTTP_HOST'] . '/common/csv/time.csv';
 
-    $localdsn = 'mysql:dbname=reservation;host=localhost;charset=utf8';
-    $localuser = 'root';
-    $localpass = '';
+    $dsn = 'mysql:dbname=reservation;host=localhost;charset=utf8';
+    $user = 'root';
+    $pass = '';
 
     $timefile = fopen($localtimecsv, "r");
     $time = fgetcsv($timefile);
@@ -71,7 +74,7 @@
     }
 
     //日付と形式から±n週w曜日の日付を$formatで出力($formatの入力対応はY-m-d,Y年m月d日,Y/m/d, Ymd,split)
-    //これなんで動いてんのかよくわかんなくなってきた
+    //これなんで動いてんのかよくわかんなくなってきた(DatetimeってYmdの入力が動くけど…？)
     function getAnyDay($Ymd, $w, $format='Y-m-d', $n='+0'){
         global $Enweek;
         $Anyday = new DateTime($Ymd. ' '.$n. ' weeks'. ' ' .$Enweek[$w]);
@@ -81,6 +84,16 @@
         else{
             return $Anyday->format($format);
         }
+    }
+
+    function prime_fact($number, $prime_list = [2,3,5,7,11,13,17]){
+        $out_list = [];
+        foreach($prime_list as $prime){
+            if($number % $prime == 0){
+                array_push($out_list, $prime);
+            }
+        }
+        return $out_list;
     }
 
     //一応置き場(多分使わないのでリリースで消す)

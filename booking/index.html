@@ -74,7 +74,7 @@
         list($booking_id, $select_day, $select_time, $regist_name, $part_pro, $otherpart, $remark, $name, $pass_hash) = $csv_date;
     
         try{
-            $dbh = new PDO($localdsn, $localuser, $localpass);
+            $dbh = new PDO($dsn, $user, $pass);
             $dbh->query("INSERT INTO booking (booking_id, day, time, regist_name, part, otherpart, remark, name, password)
              VALUES ('$booking_id', '$select_day', '$select_time', '$regist_name', '$part_pro', '$otherpart','$remark', '$name', '$pass_hash')");
         }catch (PDOException $e) {
@@ -168,10 +168,7 @@
     }
 
     function confirm(){
-        global $select_day, $time, $select_time, $regist_name, $part, $otherpart, $remark, $name, $password_len, $uniq_name;
-        $part_jp = ['ボーカル', 'ギター(マーシャル)', 'ギター(ジャズコーラス)', 'ベース', 'ドラム', 'キーボード', 'その他'];
-        $otherpart_jp = ['なし', 'あり'];
-        $prime_num = [2,3,5,7,11,13,17];
+        global $select_day, $time, $select_time, $regist_name, $part, $otherpart, $remark, $name, $password_len, $uniq_name, $part_jp, $otherpart_jp, $prime_num;
 
         $part_each = NULL;
 
