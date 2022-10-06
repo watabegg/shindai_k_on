@@ -59,9 +59,9 @@
         return $next_prev->format('Ymd');
     }
 
-    function isBorA($year, $month, $day){
-        $today = getToday('Ymd');
-        $days = $year . $month . $day;
+    function isBorA($Y_m_d){
+        $today = getToday('Y-m-d');
+        $days = $Y_m_d;
         if($today == $days){
             return 'today';
         }
@@ -73,9 +73,9 @@
         }
     }
 
-    //日付と形式から±n週w曜日の日付を$formatで出力($formatの入力対応はY-m-d,Y年m月d日,Y/m/d, Ymd,split)
-    //これなんで動いてんのかよくわかんなくなってきた(DatetimeってYmdの入力が動くけど…？)
     function getAnyDay($Ymd, $w, $format='Y-m-d', $n='+0'){
+        //日付と形式から±n週w曜日の日付を$formatで出力($formatの入力対応はY-m-d,Y年m月d日,Y/m/d, Ymd,split)
+        //これなんで動いてんのかよくわかんなくなってきた(DatetimeってYmdの入力が動くけど…？)
         global $Enweek;
         $Anyday = new DateTime($Ymd. ' '.$n. ' weeks'. ' ' .$Enweek[$w]);
         if($format == 'split'){
@@ -87,6 +87,7 @@
     }
 
     function prime_fact($number, $prime_list = [2,3,5,7,11,13,17]){
+        //素数リスト入れたら素因数分解できるやつ，重複なしのリストを返すよ
         $out_list = [];
         foreach($prime_list as $prime){
             if($number % $prime == 0){

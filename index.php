@@ -60,7 +60,6 @@
 
     $table = '<tr><th></th>'; 
     for($i = 0; $i < 7; $i++) {
-        list($y, $m, $d) = getAnyDay($Y_m_d, $i, 'split');
         $slt = getAnyDay($Y_m_d, $i, 'Y/m/d');
         $table .= '<th class="'.$Enweek[$i].'">'.$slt.'('.$week[$i].')</th>';
     }
@@ -68,9 +67,16 @@
     for($i = 0; $i < count($time); $i++) {
         $table .= '<tr><th class="'. $row_style[$i % 2] . ' table_time">' .$time[$i].'</th>';
         for($j = 0; $j < 7; $j++) {
-            list($y, $m, $d) = getAnyDay($Y_m_d, $j, 'split');
             $theday = getAnyDay($Y_m_d, $j, 'Y-m-d');
-            $table_class = isBorA($y, $m, $d);
+            $table_class = isBorA($theday);
+            if($table_class == 'Past'){
+                $confirmURL = '';
+                $bookingURL = '';            
+            }
+            else{
+                $confirmURL = 'href="./confirm/index.html?day='.$theday.'&num='.$i.'"';
+                $bookingURL = 'href="./booking/index.html?day='.$theday.'&num='.$i.'"';   
+            }
             if(mb_strlen($table_box[$i][$theday]) > 17){
                 $id_some = explode(",", $table_box[$i][$theday]);
                 $part_some = [];
@@ -81,7 +87,7 @@
                     $table .= <<<_HTML_
                         <td class="$table_class">
                             <div class="table_box">
-                            <a class="booking_window" href="./confirm/index.html?day=$theday&num=$i">
+                            <a class="booking_window" $confirmURL>
                                 <div class="table_Symbol parsonal">
                                     個人練習
                                 </div>
@@ -97,13 +103,13 @@
                     $table .= <<<_HTML_
                         <td class="$table_class">
                             <div class="table_box">
-                            <a class="booking_window" href="./booking/index.html?day=$theday&num=$i">
+                            <a class="booking_window" $bookingURL>
                                 <div class="table_Symbol triangle">
                                     <span class="material-symbols-outlined">pentagon</span>
                                 </div>
                                 <div class="table_some">
                                     <span class="table_booking">予約</span>
-                                    <span class="table_detail"><a href="./confirm/index.html?day=$theday&num=$i">詳細</a></span>
+                                    <span class="table_detail"><a $confirmURL>詳細</a></span>
                                 </div>
                             </a>
                             </div>
@@ -115,7 +121,7 @@
                 $table .= <<<_HTML_
                     <td class="$table_class">
                         <div class="table_box">
-                        <a class="booking_window" href="./booking/index.html?day=$theday&num=$i">
+                        <a class="booking_window" $bookingURL>
                             <div class="table_Symbol circle">
                                 <span class="material-symbols-outlined">circle</span>
                             </div>
@@ -129,13 +135,13 @@
             }
             else{
                 if(substr($table_box[$i][$theday], -7, -1) == "510510"){
-
+                    $band_name = mb_strimwidth($table_box2[$i][$theday], 0, 10, '…', 'utf8');
                     $table .= <<<_HTML_
                         <td class="$table_class">
                             <div class="table_box">
-                            <a class="booking_window" href="./confirm/index.html?day=$theday&num=$i">
+                            <a class="booking_window" $confirmURL>
                                 <div class="table_Symbol band_name">
-                                    {$table_box2[$i][$theday]}
+                                    $band_name
                                 </div>
                                 <div class="table_some">
                                     <span class="table_detail">詳細</span>
@@ -150,13 +156,13 @@
                         $table .= <<<_HTML_
                             <td class="$table_class">
                                 <div class="table_box">
-                                <a class="booking_window" href="./booking/index.html?day=$theday&num=$i">
+                                <a class="booking_window" $bookingURL>
                                     <div class="table_Symbol triangle">
                                         <span class="material-symbols-outlined">pentagon</span>
                                     </div>
                                     <div class="table_some">
                                         <span class="table_booking">予約</span>
-                                        <span class="table_detail"><a href="./confirm/index.html?day=$theday&num=$i">詳細</a></span>
+                                        <span class="table_detail"><a $confirmURL>詳細</a></span>
                                     </div>
                                 </a>
                                 </div>
@@ -167,7 +173,7 @@
                         $table .= <<<_HTML_
                             <td class="$table_class">
                                 <div class="table_box">
-                                <a class="booking_window" href="./confirm/index.html?day=$theday&num=$i">
+                                <a class="booking_window" $confirmURL>
                                     <div class="table_Symbol parsonal">
                                         個人練習
                                     </div>
