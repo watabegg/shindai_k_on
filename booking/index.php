@@ -1,5 +1,4 @@
 <?php
-
     session_start();
 
     require('../common/php/base.php');

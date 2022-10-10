@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 .menu {
     text-align: right;
 }
@@ -18,8 +20,7 @@
 }
 .table_box{
     text-align: center;
-    width: 80%;
-    margin: 0 auto;
+    padding: 20px 8px 4px;
 }
 .material-symbols-outlined {
     font-variation-settings:
@@ -27,4 +28,35 @@
     'wght' 300,
     'GRAD' 0,
     'opsz' 48
-  }
+}
+.next_week {
+    text-align: right;
+}
+table{
+    border-collapse: collapse;
+}
+.table_day, .table_time, .table_content{
+    border: 1px solid #000000;
+}
+table.calender{
+    table-layout: fixed;
+    width: 88%;
+    margin: auto;
+}
+.table_time {
+    width: 11%;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.time_first {
+    text-align: left;
+}
+@media (max-width:1150px) {
+    .time_end{
+        text-align: right;
+        display: block;
+    }
+    .time_first{
+        text-align: left;
+    }
+}

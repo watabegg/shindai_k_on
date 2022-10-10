@@ -9,17 +9,17 @@
     $next_week = getAnyDay($Y_m_d, 0, 'Ymd', '+1');
     $pre_week = getAnyDay($Y_m_d, 0, 'Ymd', '-1');
     if($next_week > getAnyDay(getSunday(), 0, 'Ymd', '+3')){
-        $next_week_tag = '翌週<span class="material-symbols-outlined">navigate_next</span></span>';
+        $next_week_tag = '<span class="next_week">翌週<span class="material-symbols-outlined">navigate_next</span></span>';
     }
     else{
-        $next_week_tag = '<a id="next" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$next_week.'">翌週<span class="material-symbols-outlined">navigate_next</span></a>';
+        $next_week_tag = '<span class="next_week"><a id="next" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$next_week.'">翌週<span class="material-symbols-outlined">navigate_next</span></a></span>';
     }
 
     if($pre_week < getAnyDay(getSunday(), 0, 'Ymd', '-1')){
-        $pre_week_tag = '<span class="material-symbols-outlined">navigate_before</span>先週';
+        $pre_week_tag = '<span class="prev_week"><span class="material-symbols-outlined">navigate_before</span>先週</span>';
     }
     else{
-        $pre_week_tag = '<a id="prev" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$pre_week.'" ><span class="material-symbols-outlined">navigate_before</span>先週</a>';
+        $pre_week_tag = '<span class="prev_week"><a id="prev" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$pre_week.'" ><span class="material-symbols-outlined">navigate_before</span>先週</a></span>';
     }
 
     $weekterm = getAnyDay($Y_m_d, 0, 'Y年m月d日').'~' . getAnyDay($Y_m_d, 6, 'Y年m月d日');
@@ -58,14 +58,14 @@
         print $e->getMessage();
     }
 
-    $table = '<tr><th></th>'; 
+    $table = '<tr><th class="table_day"></th>'; 
     for($i = 0; $i < 7; $i++) {
-        $slt = getAnyDay($Y_m_d, $i, 'Y/m/d');
-        $table .= '<th class="'.$Enweek[$i].'">'.$slt.'('.$week[$i].')</th>';
+        $slt = getAnyDay($Y_m_d, $i, 'n月j日');
+        $table .= '<th class="'.$Enweek[$i].' table_day">'.$slt.'('.$week[$i].')</th>';
     }
     $table .= '</tr>';
     for($i = 0; $i < count($time); $i++) {
-        $table .= '<tr><th class="'. $row_style[$i % 2] . ' table_time">' .$time[$i].'</th>';
+        $table .= '<tr><th class="table_time"><span class="time_first">' .substr($time[$i], 0, 6).'</span><span class="time_end">'.substr($time[$i], 6, 10).'</span></th>';
         for($j = 0; $j < 7; $j++) {
             $theday = getAnyDay($Y_m_d, $j, 'Y-m-d');
             $table_class = isBorA($theday);
@@ -84,12 +84,13 @@
                     $part_some[$k] = intval(substr($id_some[$k], -7, -1));
                 }
                 if(array_product($part_some) == 510510){
+                    $band_name = mb_strimwidth($table_box2[$i][$theday], 0, 10, '…', 'utf8');
                     $table .= <<<_HTML_
-                        <td class="$table_class">
+                        <td class="$table_class table_content">
                             <div class="table_box">
                             <a class="booking_window" $confirmURL>
-                                <div class="table_Symbol parsonal">
-                                    個人練習
+                                <div class="table_Symbol band_name">
+                                    $band_name
                                 </div>
                                 <div class="table_some">
                                     <span class="table_detail">詳細</span>
@@ -100,12 +101,13 @@
                     _HTML_;
                 }
                 else{
+                    $band_name = mb_strimwidth($table_box2[$i][$theday], 0, 10, '…', 'utf8');
                     $table .= <<<_HTML_
-                        <td class="$table_class">
+                        <td class="$table_class table_content">
                             <div class="table_box">
                             <a class="booking_window" $bookingURL>
-                                <div class="table_Symbol triangle">
-                                    <span class="material-symbols-outlined">pentagon</span>
+                                <div class="table_Symbol band_name">
+                                    $band_name
                                 </div>
                                 <div class="table_some">
                                     <span class="table_booking">予約</span>
@@ -119,7 +121,7 @@
             }
             elseif(mb_strlen($table_box[$i][$theday]) == 0){
                 $table .= <<<_HTML_
-                    <td class="$table_class">
+                    <td class="$table_class table_content">
                         <div class="table_box">
                         <a class="booking_window" $bookingURL>
                             <div class="table_Symbol circle">
@@ -137,50 +139,50 @@
                 if(substr($table_box[$i][$theday], -7, -1) == "510510"){
                     $band_name = mb_strimwidth($table_box2[$i][$theday], 0, 10, '…', 'utf8');
                     $table .= <<<_HTML_
-                        <td class="$table_class">
+                        <td class="$table_class table_content">
                             <div class="table_box">
-                            <a class="booking_window" $confirmURL>
-                                <div class="table_Symbol band_name">
-                                    $band_name
-                                </div>
-                                <div class="table_some">
-                                    <span class="table_detail">詳細</span>
-                                </div>
-                            </a>
+                                <a class="booking_window" $confirmURL>
+                                    <div class="table_Symbol band_name">$band_name</div>
+                                    <div class="table_some">
+                                        <span class="table_detail">詳細</span>
+                                    </div>
+                                </a>
                             </div>
                         </td>
                     _HTML_;
                 }
                 else{
                     if(substr($table_box[$i][$theday], 16, 17) == "1"){
+                        $band_name = mb_strimwidth($table_box2[$i][$theday], 0, 10, '…', 'utf8');
                         $table .= <<<_HTML_
-                            <td class="$table_class">
+                            <td class="$table_class table_content">
                                 <div class="table_box">
-                                <a class="booking_window" $bookingURL>
-                                    <div class="table_Symbol triangle">
-                                        <span class="material-symbols-outlined">pentagon</span>
-                                    </div>
-                                    <div class="table_some">
-                                        <span class="table_booking">予約</span>
-                                        <span class="table_detail"><a $confirmURL>詳細</a></span>
-                                    </div>
-                                </a>
+                                    <a class="booking_window" $bookingURL>
+                                        <div class="table_Symbol band_name">
+                                            $band_name
+                                        </div>
+                                        <div class="table_some">
+                                            <span class="table_booking">予約</span>
+                                            <span class="table_detail"><a $confirmURL>詳細</a></span>
+                                        </div>
+                                    </a>
                                 </div>
                             </td>
                         _HTML_;
                     }
                     elseif(substr($table_box[$i][$theday], 16, 17) == "0"){
+                        $band_name = mb_strimwidth($table_box2[$i][$theday], 0, 10, '…', 'utf8');
                         $table .= <<<_HTML_
-                            <td class="$table_class">
+                            <td class="$table_class table_content">
                                 <div class="table_box">
-                                <a class="booking_window" $confirmURL>
-                                    <div class="table_Symbol parsonal">
-                                        個人練習
-                                    </div>
-                                    <div class="table_some">
-                                        <span class="table_detail">詳細</span>
-                                    </div>
-                                </a>
+                                    <a class="booking_window" $confirmURL>
+                                        <div class="table_Symbol band_name">
+                                            $band_name
+                                        </div>
+                                        <div class="table_some">
+                                            <span class="table_detail">詳細</span>
+                                        </div>
+                                    </a>
                                 </div>
                             </td>
                         _HTML_;
