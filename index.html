@@ -1,18 +1,25 @@
+<?php require('index.php'); ?>
 <!doctype html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=yes">
     <title></title>
+    <script src="./common/js/menu.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link href="./common/css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="./common/css/base.css">
+    <link rel="stylesheet" href="./common/css/menu.css">
 </head>
 <body>
 <header>
+    <h1 class="head">信州大学軽音楽部</h1>
     <div id="navArea">
         <nav>
             <div class="inner">
-
+                <ul>
+                    <li class="option">
+                    </li>
+                </ul>
             </div>
         </nav>
         <div class="toggle-btn-circle">
@@ -22,17 +29,14 @@
                 <span></span>
             </div>
         </div>
+        <div class="mask"></div>
     </div>
 </header>
 <main id="scheduleMain">
-<h1 class="title">信州大学軽音楽部 コマ表</h1>
-<h2 id="ym">
-    <?php 
-        require('index.php');
-        echo $weekterm; 
-    ?>
-</h2>
-    <?php echo $pre_week_tag, $next_week_tag; ?>
+    <div class="week_select">
+        <button type="button" onclick="location.href='./index.html'">今週</button>
+        <?php echo $pre_week_tag, $weekterm, $next_week_tag; ?>
+    </div>
     <table class="calender">
         <?php echo $table; ?>
     </table>

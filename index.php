@@ -9,20 +9,20 @@
     $next_week = getAnyDay($Y_m_d, 0, 'Ymd', '+1');
     $pre_week = getAnyDay($Y_m_d, 0, 'Ymd', '-1');
     if($next_week > getAnyDay(getSunday(), 0, 'Ymd', '+3')){
-        $next_week_tag = '<span class="next_week">翌週<span class="material-symbols-outlined">navigate_next</span></span>';
+        $next_week_tag = '<button class="next_week" disabled><span class="material-symbols-outlined">navigate_next</span></button>';
     }
     else{
-        $next_week_tag = '<span class="next_week"><a id="next" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$next_week.'">翌週<span class="material-symbols-outlined">navigate_next</span></a></span>';
+        $next_week_tag = '<button class="next_week" onclick="location.href=\'index.html?date='.$next_week.'\'"><span class="material-symbols-outlined">navigate_next</span></button>';
     }
 
     if($pre_week < getAnyDay(getSunday(), 0, 'Ymd', '-1')){
-        $pre_week_tag = '<span class="prev_week"><span class="material-symbols-outlined">navigate_before</span>先週</span>';
+        $pre_week_tag = '<button class="prev_week" disabled><span class="material-symbols-outlined">navigate_before</span></button>';
     }
     else{
-        $pre_week_tag = '<span class="prev_week"><a id="prev" href="'.$_SERVER['SCRIPT_NAME'].'?date='.$pre_week.'" ><span class="material-symbols-outlined">navigate_before</span>先週</a></span>';
+        $pre_week_tag = '<button class="prev_week" onclick="location.href=\'index.html?date='.$pre_week.'\'"><span class="material-symbols-outlined">navigate_before</span></button>';
     }
 
-    $weekterm = getAnyDay($Y_m_d, 0, 'Y年m月d日').'~' . getAnyDay($Y_m_d, 6, 'Y年m月d日');
+    $weekterm = getAnyDay($Y_m_d, 0, 'm月d日').'~' . getAnyDay($Y_m_d, 6, 'm月d日');
 
     $table_box = []; //テーブルの中身を二次元配列で管理しちゃうぞ～！
     $table_box2 = [];
@@ -60,12 +60,12 @@
 
     $table = '<tr><th class="table_day"></th>'; 
     for($i = 0; $i < 7; $i++) {
-        $slt = getAnyDay($Y_m_d, $i, 'n月j日');
+        $slt = getAnyDay($Y_m_d, $i, 'm月d日');
         $table .= '<th class="'.$Enweek[$i].' table_day">'.$slt.'('.$week[$i].')</th>';
     }
     $table .= '</tr>';
     for($i = 0; $i < count($time); $i++) {
-        $table .= '<tr><th class="table_time"><span class="time_first">' .substr($time[$i], 0, 6).'</span><span class="time_end">'.substr($time[$i], 6, 10).'</span></th>';
+        $table .= '<tr><td class="table_time"><span class="time_first">' .substr($time[$i], 0, 6).'</span><span class="time_end">'.substr($time[$i], 6, 10).'</span></td>';
         for($j = 0; $j < 7; $j++) {
             $theday = getAnyDay($Y_m_d, $j, 'Y-m-d');
             $table_class = isBorA($theday);
