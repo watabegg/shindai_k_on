@@ -1,7 +1,14 @@
 @charset "UTF-8";
+@font-face {
+    font-family: 'Dela_Gothic_One';
+    src: url(../fonts/Dela_Gothic_One/DelaGothicOne-Regular.ttf);
+}
 
 body{
     margin: 0;
+}
+main {
+    padding-top: 120px;
 }
 .menu {
     text-align: right;
@@ -31,6 +38,9 @@ body{
     'wght' 300,
     'GRAD' 0,
     'opsz' 48
+}
+.circle {
+    color: #ff0000;
 }
 div.week_select{
     width: 88%;
@@ -70,4 +80,7 @@ table.calender{
     .table_time{
         text-align: center;
     }
+}
+@media (max-width:700px){
+    
 }

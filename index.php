@@ -4,7 +4,20 @@
 
     $today = new DateTime();
 
-    $Y_m_d = $_GET['date'] ?? getSunday(); //2022-09-29メモ：ここ辺りにdate勝手に編集されたときの処理を作る
+    $NotY_m_d = $_GET['date'] ?? getSunday();
+    if(is_numeric($NotY_m_d) && strlen($NotY_m_d) == 8){
+        if(isAnyday($NotY_m_d, 0)){
+            $Y_m_d = $NotY_m_d;
+        }
+        else{
+            $Y_m_d = getAnyDay($_GET['date'], 0, 'Ymd', '-1');
+            echo '<script>alert("想定外の入力のためページを自動遷移しました")</script>';
+        }
+    }
+    else{
+        $Y_m_d = getSunday();
+        echo '<script>alert("想定外の入力のためページを自動遷移しました")</script>';
+    }
 
     $next_week = getAnyDay($Y_m_d, 0, 'Ymd', '+1');
     $pre_week = getAnyDay($Y_m_d, 0, 'Ymd', '-1');
@@ -125,7 +138,7 @@
                         <div class="table_box">
                         <a class="booking_window" $bookingURL>
                             <div class="table_Symbol circle">
-                                <span class="material-symbols-outlined">circle</span>
+                                <span class="material-symbols-outlined circle">circle</span>
                             </div>
                             <div class="table_some">
                                 <span class="table_booking">予約</span>

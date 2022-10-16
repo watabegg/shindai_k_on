@@ -35,6 +35,14 @@
         }
         return false;
     }
+    
+    function isAnyday($Ymd, $weekday){
+        $Anyday = new DateTime($Ymd);
+        if($Anyday->format('w') == $weekday){
+            return true;
+        }
+        return false;
+    }
 
     function getSunday() {
         $today = new DateTime();
