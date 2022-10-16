@@ -16,6 +16,9 @@
                         <li class="option">
                             <p>まだ出来てねンだわ</p>
                         </li>
+                        <li>
+                            <p>もうちょい待っててな</p>
+                        </li>
                     </ul>
                 </div>
             </nav>
