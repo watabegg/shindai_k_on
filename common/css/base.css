@@ -67,12 +67,16 @@ table.calender{
     padding-left: 8px;
     padding-right: 8px;
 }
+.table_Symbol {
+    margin: auto;
+    height: 48px;
+}
 @media (max-width:1150px) {
     .time_end{
         text-align: right;
         display: block;
     }
-    .time_first{
+    .time_first .time_tilde{
         text-align: left;
     }
 }
@@ -81,6 +85,23 @@ table.calender{
         text-align: center;
     }
 }
-@media (max-width:700px){
-    
+@media (max-width:710px){
+    table.calender {
+        font-size: 12px;
+    }
+    .time_first{
+        display: block;
+        text-align: center;
+    }
+    .time_end{
+        text-align: center;
+    }
+    .time_tilde{
+        display: block;
+        text-align: center;
+    }
+    .table_time {
+        padding-left: 1px;
+        padding-right: 1px;
+    }
 }

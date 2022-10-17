@@ -78,7 +78,7 @@
     }
     $table .= '</tr>';
     for($i = 0; $i < count($time); $i++) {
-        $table .= '<tr><td class="table_time"><span class="time_first">' .substr($time[$i], 0, 6).'</span><span class="time_end">'.substr($time[$i], 6, 10).'</span></td>';
+        $table .= '<tr><td class="table_time"><span class="time_first">' .substr($time[$i], 0, 5).'</span><span class="time_tilde">~</span><span class="time_end">'.substr($time[$i], 6, 10).'</span></td>';
         for($j = 0; $j < 7; $j++) {
             $theday = getAnyDay($Y_m_d, $j, 'Y-m-d');
             $table_class = isBorA($theday);

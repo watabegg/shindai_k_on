@@ -99,7 +99,7 @@
         $booking_id = strval($YMD_day) . strval(sprintf('%02d', $select_time)) . strval(sprintf('%06d', $part_pro)) . strval($otherpart);
 
         //データを一時的にCSVに格納
-        $uniq_name = uniqid('', true);
+        $uniq_name = uniqid(str_pad(rand(0,9999), 4, 0, STR_PAD_LEFT));
         $csv_date = [$booking_id, $select_day, $select_time, $regist_name, $part_pro, $otherpart, $remark, $name, $pass_hash];
         $csv_name = './csv/' .$uniq_name. '.csv';
         $f = fopen($csv_name, "w");
@@ -117,12 +117,14 @@
         fclose($csv_file);
         unlink($csv_name);
 
+        $booking_time = date('Y-m-d H:i:s');
+
         list($booking_id, $select_day, $select_time, $regist_name, $part_pro, $otherpart, $remark, $name, $pass_hash) = $csv_date;
     
         try{
             $dbh = new PDO($dsn, $user, $pass);
-            $dbh->query("INSERT INTO booking (booking_id, day, time, regist_name, part, otherpart, remark, name, password)
-             VALUES ('$booking_id', '$select_day', '$select_time', '$regist_name', '$part_pro', '$otherpart','$remark', '$name', '$pass_hash')");
+            $dbh->query("INSERT INTO booking (booking_id, booking_time, day, time, regist_name, part, otherpart, remark, name, password)
+             VALUES ('$booking_id', '$booking_time', '$select_day', '$select_time', '$regist_name', '$part_pro', '$otherpart','$remark', '$name', '$pass_hash')");
         }catch (PDOException $e) {
             print 'エラー' .PHP_EOL. $e->getMessage();
         }
