@@ -9,36 +9,46 @@
     $days = $_GET['day'] ?? $today->format('Y-m-d');
     $num = $_GET['num'] ?? 0;
 
+    $MaxDate = getAnyDay($today->format('Ymd'), 6, 'Y-m-d', '+3');
+    $dayselect = '<input type="date" name="day" value="'. $days . '" min="'. $today->format('Y-m-d') .'" max="'. $MaxDate .'" required>';
+
+    try{
+        $dbh = new PDO($dsn, $user, $pass);
+        $DyTmRs = $dbh->query("SELECT part, otherpart FROM booking WHERE day = '$days' AND time = '$num'");
+        $DyRs = $dbh->query("SELECT time FROM booking WHERE day = '$days'");
+        $DyTmdate = $DyTmRs->fetchAll(PDO::FETCH_ASSOC);
+        $Dydate = $DyRs->fetchAll(PDO::FETCH_ASSOC);
+        $count = $DyTmRs->rowCount();
+    }
+    catch(PDOException $e){
+        $e->getMessage();
+    }
+    $dbh = null;
+
     $timeselect = '<select name="time" required>';
     for($i=0; $i < count($time); $i++){
         if($i == $num){
             $timeselect .= '<option value="'. $i . '" selected>' . $time[$i] . '</option>';
         }
         else{
-            $timeselect .= '<option value="'. $i . '">' . $time[$i] . '</option>';
+            if(in_array($i, array_column($Dydate, 'time'))){
+                $timeselect .= '<option value="'.$i.'" disabled>' . $time[$i] . '</option>';
+            }
+            else{
+                $timeselect .= '<option value="'.$i.'">' . $time[$i] . '</option>';
+            }
         }
     }
-    $timeselect .= '<option value='. count($time) .'>ユーザー入力(備考に記入してください)</option></select>';
-
-    $MaxDate = getAnyDay($today->format('Ymd'), 6, 'Y-m-d', '+3');
-    $dayselect = '<input type="date" name="day" value="'. $days . '" min="'. $today->format('Y-m-d') .'" max="'. $MaxDate .'" required>';
-
-    try{
-        $dbh = new PDO($dsn, $user, $pass);
-        $res = $dbh->query("SELECT part, otherpart FROM booking WHERE day = '$days' AND time = '$num'");
-        $date = $res->fetchAll(PDO::FETCH_ASSOC);
-        $count = $res->rowCount();
-    }
-    catch(PDOException $e){
-        $e->getMessage();
-    }
+    $timeselect .= '</select>';
+    //<option value='. count($time) .'>ユーザー入力(備考に記入してください)</option>
+    //上のやつまだ処理を追加してないのでいつかやって
     
     $usedpart = [];
     for($i=0; $i < count($part_jp); $i++){
         $usedpart[$i] = null;
     }
     for($i=0; $i < $count; $i++){
-        $prime = prime_fact($date[$i]["part"]);
+        $prime = prime_fact($DyTmdate[$i]["part"]);
         for($j=0; $j < count($prime); $j++){
             $k = array_search($prime[$j], $prime_num);
             $usedpart[$k] = 'disabled';
@@ -50,15 +60,16 @@
             <option value="{$prime_num[$i]}" {$usedpart[$i]}>{$part_jp[$i]}</option>
         _HTML_;
     }
+    $partselect .= '</select>';
     
     if($count > 0){
-        if($date[0]['otherpart'] == 1){
+        if($DyTmdate[0]['otherpart'] == 1){
             $otherpartselect = <<<_HTML_
                 <input type="radio" name="otherpart" value="1" checked disabled>あり
                 <input type="radio" name="otherpart" value="0" disabled>なし
             _HTML_;
         }
-        elseif($date[0]['otherpart'] == 0){
+        elseif($DyTmdate[0]['otherpart'] == 0){
             $otherpartselect = <<<_HTML_
                 <input type="radio" name="otherpart" value="1" disabled>あり
                 <input type="radio" name="otherpart" value="0" checked disabeld>なし

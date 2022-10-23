@@ -108,6 +108,7 @@
         }catch (PDOException $e) {
             print 'エラー' .PHP_EOL. $e->getMessage();
         }
+        $dbh = null;
     }
     //戻るフォームがPOSTされたときの処理
     elseif(isset($_POST['koma_form_back'])){

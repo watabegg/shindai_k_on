@@ -1,0 +1,170 @@
+<?php
+    session_start();
+
+    require('../common/php/base.php');
+
+    $today = new DateTime();
+
+    $page_flag = 0;
+
+    //確認フォームがPOSTされたときの処理
+    if(isset($_POST['form_confirm'])) {
+        $page_flag = 1;
+
+        $title = htmlspecialchars($_POST['title'], ENT_QUOTES);
+        $beginning = htmlspecialchars($_POST['beginning'], ENT_QUOTES);
+        $deadline = htmlspecialchars($_POST['deadline'], ENT_QUOTES);
+        $term_start = htmlspecialchars($_POST['term_strat'], ENT_QUOTES);
+        $term_end = htmlspecialchars($_POST['term_end'], ENT_QUOTES);
+
+        //データを一時的にCSVに格納
+        $uniq_name = uniqid('', true);
+        $csv_date = [$uniq_name, $title, $beginning, $deadline, $term_start, $term_end];
+        $csv_name = './csv/' .$uniq_name. '.csv';
+        $f = fopen($csv_name, "w");
+        fputcsv($f, $csv_date);
+        fclose($f);
+    }
+    //予約フォームがPOSTされたときの処理
+    elseif(isset($_POST['form_submit'])){
+        $page_flag = 2;
+
+        //CSVを読んで削除
+        $csv_name = './csv/' .$_POST['uniq_csv'].'.csv';
+        $csv_file = fopen($csv_name, "r");
+        $csv_date = fgetcsv($csv_file);
+        fclose($csv_file);
+        unlink($csv_name);
+
+        $booking_time = date('Y-m-d H:i:s');
+
+        list($uniq_name, $title, $beginning, $deadline, $term_start, $term_end) = $csv_date;
+    
+        try{
+            $dbh = new PDO($dsn, $user, $pass);
+            $dbh->query("INSERT INTO gig_booking (id, title, beginning, deadline, term_start, term_end)
+             VALUES ('$uniq_name', '$title', '$beginning', '$deadline', '$term_start', '$term_end')");
+             $dbh->query("CREATE TABLE reservation.'".$uniq_name."' (
+                sub_time DATETIME, 
+                band_name VARCHAR(50), 
+                repre_name VARCHAR(30), 
+                grade INT, 
+                weekreq1 INT, 
+                weekreq2 INT, 
+                weekreq3 INT,
+                timereq1 INT,
+                timereq2 INT,
+                timereq3 INT,
+                remark TEXT,
+                password VARCHER(255)
+            ) ");
+        }catch (PDOException $e) {
+            print 'エラー' .PHP_EOL. $e->getMessage();
+        }
+        $dbh = null;
+    }
+    //戻るフォームがPOSTされたときの処理
+    elseif(isset($_POST['form_back'])){
+        $page_flag = 0;
+
+        //CSVを削除
+        $csv_name = './csv/' .$_POST['uniq_csv'].'.csv';
+        unlink($csv_name);
+    }
+
+    function booking(){
+        echo <<<_HTML_
+        <h1 class="title">コマ割り募集フォーム作成フォーム</h1>
+        <div id="gigscheduleMain">
+            <form method="POST" action="">
+            <table>
+                <tr>
+                    <td class="menu">募集タイトル：</td>
+                    <td><input type="text" name="title" maxlength="70" placeholder="例：銀嶺祭教室ライブ" required></td>
+                </tr>
+                <tr>
+                    <td class="menu">募集期間：</td>
+                    <td>
+                        <span class="first_half">
+                            <input type="date" name="beginning" required>
+                        </span>
+                        <span class="tilde">~</span>
+                        <span class="last_half">
+                            <input type="date" name="deadline" required>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="menu">施行期間：</td>
+                    <td>
+                        <span class="first_half">
+                            <input type="date" name="term_start" required>
+                        </span>
+                        <span class="tilde">~</span>
+                        <span class="last_half">
+                            <input type="date" name="term_end" required>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" name="form_confirm" value="確認"></td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        _HTML_;
+    }
+
+    function confirm(){
+        global $uniq_name, $title, $beginning, $deadline, $term_start, $term_end;
+
+        echo <<<_HTML_
+        <div id="bookingConfirm">
+            <h1 class="title">信州大学軽音楽部 予約フォーム確認</h1>
+            <form method="POST" action="">
+            <table>
+                <tr>
+                    <td class="menu">募集タイトル：</td>
+                    <td>$title</td>
+                </tr>
+                <tr>
+                    <td class="menu">募集期間：</td>
+                    <td>
+                        <span class="first_half">$beginning</span>
+                        <span class="tilde">~</span>
+                        <span class="last_half">$deadline</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="menu">施行期間：</td>
+                    <td>
+                        <span class="first_half">$term_start</span>
+                        <span class="tilde">~</span>
+                        <span class="last_half">$term_end</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="hidden" name="uniq_csv" value="$uniq_name">
+                        <input type="submit" name="form_back" value="戻る">
+                        <input type="submit" name="form_submit" value="予約">
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        _HTML_;
+    }
+
+    function complete(){
+        echo <<<_HTML_
+        <div id="CompleteMain">
+            <h1>完了しました！</h1>
+            <button type="button" onclick="location.href='http://localhost/shindai_k_on/index.html'">ホームに戻る</button>
+        </div>
+        _HTML_;
+    }
+
+?>

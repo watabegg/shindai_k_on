@@ -1,5 +1,5 @@
 <?php
-    require('../common/php/base.php');
+    require('../../common/php/base.php');
 
     $today = new DateTime();
 
@@ -54,8 +54,8 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><a>予約を修正</a></td>
-                            <td><a>予約を削除</a></td>
+                            <td><a href="../fix/index.html?id={$date[$i]['booking_id']}">予約を修正</a></td>
+                            <td><a href="../delete/index.html?id={$date[$i]['booking_id']}">予約を削除</a></td>
                         </tr>
                     </table>
                 </div>
@@ -71,14 +71,16 @@
     <meta charset="UTF-8">
     <title></title>
     <link href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css" rel="stylesheet">
-    <link href="../common/css/base.css" rel="stylesheet">
+    <link href="../../common/css/base.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 </head>
 <body>
 <header>
+    <?php require('../../common/php/header.php'); ?>
 </header>
-    <a href='http://localhost/shindai_k_on/index.html'>やるやん</a>
+<main>
     <?php echo $booking_confirm; ?>
+</main>
 </body>
 </html>

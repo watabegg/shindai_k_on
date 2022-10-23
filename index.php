@@ -70,6 +70,7 @@
     catch(PDOException $e){
         print $e->getMessage();
     }
+    $dbh = null;
 
     $table = '<tr><th class="table_day"></th>'; 
     for($i = 0; $i < 7; $i++) {
@@ -87,7 +88,7 @@
                 $bookingURL = '';            
             }
             else{
-                $confirmURL = 'href="./confirm/index.html?day='.$theday.'&num='.$i.'"';
+                $confirmURL = 'href="./booking/confirm/index.html?day='.$theday.'&num='.$i.'"';
                 $bookingURL = 'href="./booking/index.html?day='.$theday.'&num='.$i.'"';   
             }
             if(mb_strlen($table_box[$i][$theday]) > 17){
