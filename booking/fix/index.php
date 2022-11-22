@@ -13,6 +13,8 @@
     $days = getAnyDay($Ymdday, 0);
     $times = intval(substr($id, 8, 2));
 
+    $page_flag = 0;
+
     try{
         $dbh = new PDO($dsn, $user, $pass);
         $IdRs = $dbh->query("SELECT * FROM booking WHERE booking_id = '$id'");
@@ -54,5 +56,33 @@
     }
     $partselect .= '</select>';
 
+    function fix(){
+        echo <<<_HTML_
+
+        _HTML_;
+    }
+    function fix_confirm(){
+        echo <<<_HTML_
+
+        _HTML_;
+    }
+    function complete(){
+        echo <<<_HTML_
+        <div>
+            <h1>完了しました！</h1>
+            <button type="button" onclick="location.href='http://localhost/shindai_k_on/index.html'">ホームに戻る</button>
+        </div>
+        _HTML_;
+    }
+    function delete(){
+        echo <<<_HTML_
+
+        _HTML_;
+    }
+    function delete_confirm(){
+        echo <<<_HTML_
+
+        _HTML_;
+    }
     
 ?>
