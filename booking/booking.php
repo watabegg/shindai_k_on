@@ -13,7 +13,7 @@ if(isset($_POST['time'])) {
 
     $localdsn = 'mysql:dbname=reservation;host=localhost;charset=utf8';
     $localuser = 'root';
-    $localpass = '';
+    $localpass = 'Qx76pd3aa';
 
     try{
         $dbh = new PDO($localdsn, $localuser, $localpass);
