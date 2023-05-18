@@ -13,7 +13,7 @@
         $date = $res->fetchAll(PDO::FETCH_ASSOC);
         $count = $res->rowCount();
 
-        $booking_confirm = NULL;
+        $booking_confirm = '';
 
         for($i=0; $i < $count; $i++){
             $part_each = NULL;
@@ -63,6 +63,7 @@
         }
     }
     catch(PDOException $e){
+        var_dump($e->getMessage());
     }
 ?>
 <!doctype html>
@@ -79,6 +80,8 @@
 <header>
 </header>
     <a href='http://localhost/shindai_k_on/index.html'>やるやん</a>
-    <?php echo $booking_confirm; ?>
+    <?php 
+        echo $booking_confirm; 
+    ?>
 </body>
 </html>

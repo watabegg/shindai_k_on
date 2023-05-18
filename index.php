@@ -44,8 +44,8 @@
         $table_box2[$i] = [];
         for($j=0; $j < 7; $j++){
             $table_day = getAnyDay($Y_m_d, $j, 'Y-m-d');
-            $table_box[$i][$table_day] = null;
-            $table_box2[$i][$table_day] = null;
+            $table_box[$i][$table_day] = '';
+            $table_box2[$i][$table_day] = '';
         }
     }
 

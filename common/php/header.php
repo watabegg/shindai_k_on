@@ -1,7 +1,7 @@
 <?php
-    $url = 'http://localhost/shindai_k_on/index.html';
-    $cssurl = 'http://localhost/shindai_k_on/common/css/menu.css';
-    $jsurl = 'http://localhost/shindai_k_on/common/js/menu.js';
+    $url = 'http://' . $_SERVER['HTTP_HOST'] . '/shindai_k_on/index.html';
+    $cssurl = 'http://' . $_SERVER['HTTP_HOST'] . '/shindai_k_on/common/css/menu.css';
+    $jsurl = 'http://' . $_SERVER['HTTP_HOST'] . '/shindai_k_on/common/js/menu.js';
 
     echo <<<_HTML_
     <link rel="stylesheet" href="$cssurl">
