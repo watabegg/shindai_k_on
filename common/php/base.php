@@ -8,13 +8,14 @@
     $otherpart_jp = ['なし', 'あり'];
     $prime_num = [2,3,5,7,11,13,17];
     //$time =['7:30~9:00','9:00~10:30','10:40~12:10','12:10~13:30','13:30~15:00','15:10~16:40','16:50~18:20','18:30~20:00','20:00~21:30'];
+    $localtimecsv = 'http://localhost/shindai_k_on/common/csv/time.csv'; //ローカル
     $timecsv = 'http://' . $_SERVER['HTTP_HOST'] . '/common/csv/time.csv';
 
     $dsn = 'mysql:dbname=reservation;host=localhost;charset=utf8';
     $user = 'root';
     $pass = 'Qx76pd3aa';
 
-    $timefile = fopen($timecsv, "r");
+    $timefile = fopen($localtimecsv, "r");
     $time = fgetcsv($timefile);
     fclose($timefile);
 
@@ -35,7 +36,7 @@
         return false;
     }
     
-    function isAnyday($Ymd, $weekday){
+    function isAnyday($Ymd, $weekday){ //入力した日が入力した曜日かどうか教えてくれる関数
         $Anyday = new DateTime($Ymd);
         if($Anyday->format('w') == $weekday){
             return true;
@@ -66,7 +67,7 @@
         return $next_prev->format('Ymd');
     }
 
-    function isBorA($Y_m_d){
+    function isBorA($Y_m_d){ //入力した日付が過去か今か未来かを返す。文字列で返す(classに入れるから)けど後変えるかも
         $today = getToday('Y-m-d');
         $days = $Y_m_d;
         if($today == $days){

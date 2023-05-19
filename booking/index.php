@@ -8,6 +8,7 @@
     //GETの取得
     $days = $_GET['day'] ?? $today->format('Y-m-d');
     $num = $_GET['num'] ?? 0;
+    $status = $_GET['status'] ?? 'close';
 
     $timeselect = '<select name="time" required>';
     for($i=0; $i < count($time); $i++){
@@ -25,7 +26,7 @@
 
     try{
         $dbh = new PDO($dsn, $user, $pass);
-        $res = $dbh->query("SELECT part, otherpart FROM booking WHERE day = '$days' AND time = '$num'");
+        $res = $dbh->query("SELECT booking_id, regist_name, part, otherpart, remark, name FROM booking WHERE day = '$days' AND time = '$num'");
         $date = $res->fetchAll(PDO::FETCH_ASSOC);
         $count = $res->rowCount();
     }
@@ -54,13 +55,15 @@
     if($count > 0){
         if($date[0]['otherpart'] == 1){
             $otherpartselect = <<<_HTML_
-                <input type="radio" name="otherpart" value="1" checked disabled>あり
+                <input type="hidden" name="otherpart" value="1">
+                <input type="radio" name="otherpart" checked disabled>あり
                 <input type="radio" name="otherpart" value="0" disabled>なし
             _HTML_;
         }
         elseif($date[0]['otherpart'] == 0){
             $otherpartselect = <<<_HTML_
-                <input type="radio" name="otherpart" value="1" disabled>あり
+                <input type="radio" name="otherpart" disabled>あり
+                <input type="hidden" name="otherpart" value="0">
                 <input type="radio" name="otherpart" value="0" checked disabeld>なし
             _HTML_;
         }
@@ -275,6 +278,62 @@
             <button type="button" onclick="location.href='http://localhost/shindai_k_on/index.html'">ホームに戻る</button>
         </div>
         _HTML_;
+    }
+
+    function confirm_page(){
+        global $date, $days, $num, $part_jp, $otherpart_jp, $prime_num, $time, $count;
+
+        $booking_confirm = '';
+
+        for($i=0; $i < $count; $i++){
+            $part_each = NULL;
+            if($date[$i]['part'] == 510510){
+                $part_each .= 'バンド';
+            }
+            else{
+                foreach(prime_fact($date[$i]['part']) as $prime){
+                    $j = array_search($prime, $prime_num);
+                    $part_each .= $part_jp[$j] . ',';
+                }
+                $part_each = rtrim($part_each, ',');
+            }
+            $k = $i + 1;
+            $booking_confirm .= <<<_HTML_
+                <div class="confirm_page">
+                    <h1 class="title">信州大学軽音楽部 予約確認ページ</h1>
+                    <h3>予約日:$days    予約時間:$time[$num]</h3>
+                    <span>{$k}件目</span>
+                    <table>
+                        <tr>
+                            <td class="menu">登録名：</td>
+                            <td>{$date[$i]['regist_name']}</td>
+                        </tr>
+                        <tr>
+                            <td class="menu">パート：</td>
+                            <td>$part_each</td>
+                        </tr>
+                        <tr>
+                            <td class="menu">他パート参加：</td>
+                            <td>{$otherpart_jp[$date[$i]['otherpart']]}</td>
+                        </tr>
+                        <tr>
+                            <td class="menu">備考：</td>
+                            <td>{$date[$i]['remark']}</td>
+                        </tr>
+                        <tr>
+                            <td class="menu">予約者名：</td>
+                            <td>{$date[$i]['name']}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><a>予約を修正</a></td>
+                            <td><a>予約を削除</a></td>
+                        </tr>
+                    </table>
+                </div>
+            _HTML_;
+        }
+        echo $booking_confirm;
     }
 
 ?>

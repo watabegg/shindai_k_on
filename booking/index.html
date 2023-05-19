@@ -14,6 +14,7 @@
 </header>
 <main id="bookingMain">
     <?php
+    if($status == 'circle'){
         if($page_flag == 1){
             confirm();
         }
@@ -23,6 +24,13 @@
         else{
             booking();
         }
+    }
+    elseif ($status == 'change_history') {
+        # code...
+    }
+    else{
+        confirm_page();
+    }
     ?>
 
 </main>
