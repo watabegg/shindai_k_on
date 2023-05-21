@@ -23,7 +23,7 @@
         return html_entity_decode($word);
     }
 
-    function getToday($date = 'Y-m-d') {
+    function getToday($date = 'Y-m-d') { //なんかこれ全然要らん気がする 面倒くさいので消さない
         $today = new DateTime();
         return $today->format($date);
     }
@@ -82,7 +82,7 @@
     }
 
     function getAnyDay($Ymd, $w, $format='Y-m-d', $n='+0'){
-        //日付と形式から±n週w曜日の日付を$formatで出力($formatの入力対応はY-m-d,Y年m月d日,Y/m/d, Ymd,split)
+        //日付と形式から±n週w曜日の日付を$formatで出力($formatの入力対応はY-m-d,Y年m月d日,Y/m/d, Ymd, split)
         //これなんで動いてんのかよくわかんなくなってきた(DatetimeってYmdの入力が動くけど…？)
         global $Enweek;
         $Anyday = new DateTime($Ymd. ' '.$n. ' weeks'. ' ' .$Enweek[$w]);
@@ -95,7 +95,8 @@
     }
 
     function prime_fact($number, $prime_list = [2,3,5,7,11,13,17]){
-        //素数リスト入れたら素因数分解できるやつ，重複なしのリストを返すよ
+        //素数リスト入れたら素因数分解できるやつ 重複なしのリストを返すよ
+        //使用パートを数値で扱うために実装 こっちのほうが使いやすいね
         $out_list = [];
         foreach($prime_list as $prime){
             if($number % $prime == 0){

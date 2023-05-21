@@ -15,23 +15,16 @@
 <main id="bookingMain">
     <?php
     if($status == 'circle'){
-        if($page_flag == 1){
-            confirm();
-        }
-        elseif($page_flag == 2){
-            complete();
-        }
-        else{
-            booking();
-        }
+        booking_all();
     }
     elseif ($status == 'change_history') {
-        # code...
+        switch_page();
     }
     else{
         confirm_page();
     }
     ?>
+    <button type="button" onclick="location.href='http://localhost/shindai_k_on/index.html'">ホームに戻る</button>
 
 </main>
 </body>

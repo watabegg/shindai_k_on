@@ -75,6 +75,8 @@
         _HTML_;
     }
 
+    // -------- 予約 -------- 
+
     $page_flag = 0;
 
     //確認フォームがPOSTされたときの処理
@@ -139,151 +141,165 @@
         unlink($csv_name);
     }
 
-    function booking(){
-        global $dayselect, $timeselect, $partselect, $otherpartselect;
-        echo <<<_HTML_
-        <h1 class="title">信州大学軽音楽部 予約フォーム</h1>
-        <div id="bookingMain">
-            <form method="POST" action="">
-            <table>
-                <tr>
-                    <td class="menu">予約日：</td>
-                    <td>$dayselect</td>
-                </tr>
-                <tr>
-                    <td class="menu">予約時間：</td>
-                    <td>$timeselect</td>
-                </tr>
-                <tr>
-                    <td class="menu">登録名：</td>
-                    <td><input type="text" name="regist_name" maxlength="70" placeholder="例：ギター個人練習" required></td>
-                </tr>
-                <tr>
-                    <td class="menu">パート：</td>
-                    <td>$partselect</td>
-                </tr>
-                <tr>
-                    <td class="menu">他パート参加：</td>
-                    <td>$otherpartselect</td>
-                </tr>
-                <tr>
-                    <td class="menu">備考：</td>
-                    <td><textarea name="remark"></textarea></td>
-                </tr>
-                <tr>
-                    <td class="menu">予約者名：</td>
-                    <td><input type="text" name="name" maxlength="20" required></td>
-                </tr>
-                <tr>
-                    <td class="menu">パスワード：</td>
-                    <td><input type="password" name="password" required></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" name="form_confirm" value="確認"></td>
-                </tr>
-            </table>
-            </form>
-        <script>
-            $(function () {
-                //$('.multiple-select').multipleSelect('checkAll');
-                $('.multiple-select').multipleSelect({
-                    width: 250,
-                    formatSelectAll: function() {
-                        return 'バンド練習';
-                    },
-                    formatAllSelected: function() {
-                        return 'バンド練習';
-                    },
-                    placeholder: '使用パートを選択してください'
-                });
-            });
-        </script>
-        </div>
-        _HTML_;
+    // -------- ページ切り替え -------- 
+
+    $page_flag2 = 0;
+
+    if(isset($_POST['booking'])){
+        $page_flag2 = 0;
+    }
+    elseif(isset($_POST['confirm'])){
+        $page_flag2 = 1;
     }
 
-    function confirm(){
+
+    function booking_all(){ //パワープレイ関数 おかげでグローバルで持ってきてる変数が多い
+        global $page_flag, $dayselect, $timeselect, $partselect, $otherpartselect;
         global $select_day, $time, $select_time, $regist_name, $part, $otherpart, $remark, $name, $password_len, $uniq_name, $part_jp, $otherpart_jp, $prime_num;
+        if($page_flag == 1){
+            $part_each = NULL;
 
-        $part_each = NULL;
-
-        if(count($part) == 7){
-            $part_each .= 'バンド';
+            if(count($part) == 7){
+                $part_each .= 'バンド';
+            }
+            else{
+                foreach($part as $i){
+                    $j = array_search($i, $prime_num);
+                    $part_each .= $part_jp[$j] . ', ';
+                }
+                $part_each = substr($part_each, 0, -2);
+            }
+        
+    
+            echo <<<_HTML_
+            <div id="bookingConfirm">
+                <h1 class="title">信州大学軽音楽部 予約フォーム確認</h1>
+                <form method="POST" action="">
+                <table>
+                    <tr>
+                        <td class="menu">予約日：</td>
+                        <td>$select_day</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">予約時間：</td>
+                        <td>$time[$select_time]</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">登録名：</td>
+                        <td>$regist_name</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">パート：</td>
+                        <td>$part_each</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">他パート参加：</td>
+                        <td>$otherpart_jp[$otherpart]</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">備考：</td>
+                        <td>$remark</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">予約者名：</td>
+                        <td>$name</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">パスワード：</td>
+                        <td><b>$password_len</b></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="hidden" name="uniq_csv" value="$uniq_name">
+                            <input type="submit" name="form_back" value="戻る">
+                            <input type="submit" name="form_submit" value="予約">
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            _HTML_;
+        }
+        elseif($page_flag == 2){
+            echo <<<_HTML_
+            <div id="CompleteMain">
+                <h1>完了しました！</h1>
+            </div>
+            _HTML_;
         }
         else{
-            foreach($part as $i){
-                $j = array_search($i, $prime_num);
-                $part_each .= $part_jp[$j] . ', ';
-            }
-            $part_each = substr($part_each, 0, -2);
+            echo <<<_HTML_
+            <h1 class="title">信州大学軽音楽部 予約フォーム</h1>
+            <div id="bookingMain">
+                <form method="POST" action="">
+                <table>
+                    <tr>
+                        <td class="menu">予約日：</td>
+                        <td>$dayselect</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">予約時間：</td>
+                        <td>$timeselect</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">登録名：</td>
+                        <td><input type="text" name="regist_name" maxlength="70" placeholder="例：ギター個人練習" required></td>
+                    </tr>
+                    <tr>
+                        <td class="menu">パート：</td>
+                        <td>$partselect</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">他パート参加：</td>
+                        <td>$otherpartselect</td>
+                    </tr>
+                    <tr>
+                        <td class="menu">備考：</td>
+                        <td><textarea name="remark"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="menu">予約者名：</td>
+                        <td><input type="text" name="name" maxlength="20" required></td>
+                    </tr>
+                    <tr>
+                        <td class="menu">パスワード：</td>
+                        <td><input type="password" name="password" required></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" name="form_confirm" value="確認"></td>
+                    </tr>
+                </table>
+                </form>
+            <script>
+                $(function () {
+                    //$('.multiple-select').multipleSelect('checkAll');
+                    $('.multiple-select').multipleSelect({
+                        width: 250,
+                        formatSelectAll: function() {
+                            return 'バンド練習';
+                        },
+                        formatAllSelected: function() {
+                            return 'バンド練習';
+                        },
+                        placeholder: '使用パートを選択してください'
+                    });
+                });
+            </script>
+            </div>
+        _HTML_;
         }
-    
-
-        echo <<<_HTML_
-        <div id="bookingConfirm">
-            <h1 class="title">信州大学軽音楽部 予約フォーム確認</h1>
-            <form method="POST" action="">
-            <table>
-                <tr>
-                    <td class="menu">予約日：</td>
-                    <td>$select_day</td>
-                </tr>
-                <tr>
-                    <td class="menu">予約時間：</td>
-                    <td>$time[$select_time]</td>
-                </tr>
-                <tr>
-                    <td class="menu">登録名：</td>
-                    <td>$regist_name</td>
-                </tr>
-                <tr>
-                    <td class="menu">パート：</td>
-                    <td>$part_each</td>
-                </tr>
-                <tr>
-                    <td class="menu">他パート参加：</td>
-                    <td>$otherpart_jp[$otherpart]</td>
-                </tr>
-                <tr>
-                    <td class="menu">備考：</td>
-                    <td>$remark</td>
-                </tr>
-                <tr>
-                    <td class="menu">予約者名：</td>
-                    <td>$name</td>
-                </tr>
-                <tr>
-                    <td class="menu">パスワード：</td>
-                    <td><b>$password_len</b></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type="hidden" name="uniq_csv" value="$uniq_name">
-                        <input type="submit" name="form_back" value="戻る">
-                        <input type="submit" name="form_submit" value="予約">
-                    </td>
-                </tr>
-            </table>
-            </form>
-        </div>
-        _HTML_;
-    }
-
-    function complete(){
-        echo <<<_HTML_
-        <div id="CompleteMain">
-            <h1>完了しました！</h1>
-            <button type="button" onclick="location.href='http://localhost/shindai_k_on/index.html'">ホームに戻る</button>
-        </div>
-        _HTML_;
     }
 
     function confirm_page(){
         global $date, $days, $num, $part_jp, $otherpart_jp, $prime_num, $time, $count;
 
-        $booking_confirm = '';
+        $booking_confirm = <<<_HTML_
+        <div class="confirm_page">
+            <h1 class="title">信州大学軽音楽部 予約確認ページ</h1>
+            <h3>予約日:$days    予約時間:$time[$num]</h3>
+        _HTML_;
 
         for($i=0; $i < $count; $i++){
             $part_each = NULL;
@@ -299,9 +315,6 @@
             }
             $k = $i + 1;
             $booking_confirm .= <<<_HTML_
-                <div class="confirm_page">
-                    <h1 class="title">信州大学軽音楽部 予約確認ページ</h1>
-                    <h3>予約日:$days    予約時間:$time[$num]</h3>
                     <span>{$k}件目</span>
                     <table>
                         <tr>
@@ -334,6 +347,29 @@
             _HTML_;
         }
         echo $booking_confirm;
+    }
+
+    function switch_page(){
+        global $page_flag2;
+        $page = 'booking';
+
+        if($page_flag2 == 1){
+            confirm_page();
+            $page = 'booking';
+        }
+        else{
+            booking_all();
+            $page = 'confirm';
+        }
+
+        echo <<<_HTML_
+            <div id=switch_button>
+                <form method="POST" name="switch" action="">
+                    <input type="hidden" name="$page" value="1">
+                    <button type="button" onclick="document.switch.submit();">$page ページに切り替える</button>
+            </div>
+        
+        _HTML_;
     }
 
 ?>
