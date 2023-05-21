@@ -3,32 +3,27 @@
     require('common/php/base.php');
 
     $today = new DateTime();
+    $today_w = $today->format('w');
 
-    $NotY_m_d = $_GET['date'] ?? getSunday();
-    if(is_numeric($NotY_m_d) && strlen($NotY_m_d) == 8){
-        if(isAnyday($NotY_m_d, 0)){
-            $Y_m_d = $NotY_m_d;
-        }
-        else{
-            $Y_m_d = getAnyDay($_GET['date'], 0, 'Ymd', '-1');
-            echo '<script>alert("想定外の入力のためページを自動遷移しました")</script>';
-        }
+    $NotY_m_d = $_GET['date'] ?? getToday('Ymd');
+    if(is_numeric($NotY_m_d) && strlen($NotY_m_d) == 8){ //ちゃんと数かつ8文字か確認
+        $Y_m_d = $NotY_m_d;
     }
     else{
-        $Y_m_d = getSunday();
+        $Y_m_d = getToday('Ymd');
         echo '<script>alert("想定外の入力のためページを自動遷移しました")</script>';
     }
 
-    $next_week = getAnyDay($Y_m_d, 0, 'Ymd', '+1');
-    $pre_week = getAnyDay($Y_m_d, 0, 'Ymd', '-1');
-    if($next_week > getAnyDay(getSunday(), 0, 'Ymd', '+3')){
+    $next_week = getAnyDay($Y_m_d, $today_w, 'Ymd', '+1');
+    $pre_week = getAnyDay($Y_m_d, $today_w, 'Ymd', '-1');
+    if($next_week > getAnyDay(getToday('Ymd'), $today_w, 'Ymd', '+3')){
         $next_week_tag = '<button class="next_week" disabled><span class="material-symbols-outlined">navigate_next</span></button>';
     }
     else{
         $next_week_tag = '<button class="next_week" onclick="location.href=\'index.html?date='.$next_week.'\'"><span class="material-symbols-outlined">navigate_next</span></button>';
     }
 
-    if($pre_week < getAnyDay(getSunday(), 0, 'Ymd', '-1')){
+    if($pre_week < getAnyDay(getToday('Ymd'), $today_w, 'Ymd', '-2')){
         $pre_week_tag = '<button class="prev_week" disabled><span class="material-symbols-outlined">navigate_before</span></button>';
     }
     else{
@@ -36,22 +31,20 @@
     }
 
     $table_box = []; //テーブルの中身を二次元配列で管理しちゃうぞ～！
-    $table_box2 = [];
     for($i=0; $i < count($time); $i++){
         $table_box[$i] = [];
-        $table_box2[$i] = [];
         for($j=0; $j < 7; $j++){
-            $table_day = getAnyDay($Y_m_d, $j, 'Y-m-d');
+            $table_day = getAnyDay($Y_m_d, (($j + $today_w) % 7), 'Y-m-d');
             $table_box[$i][$table_day] = '';
         }
     }
 
-    $toweekSun = getAnyDay($Y_m_d, 0, 'Y-m-d');
-    $toweekSat = getAnyDay($Y_m_d, 6, 'Y-m-d');
+    $toweekbegin = getAnyDay($Y_m_d, $today_w, 'Y-m-d');
+    $toweekend = getAnyDay($Y_m_d, ((6 + $today_w) % 7), 'Y-m-d');
 
     try{
         $dbh = new PDO($dsn, $user, $pass);
-        $res = $dbh->query("SELECT booking_id, day, time, regist_name FROM booking WHERE day BETWEEN '$toweekSun' AND '$toweekSat'");
+        $res = $dbh->query("SELECT booking_id, day, time, regist_name FROM booking WHERE day BETWEEN '$toweekbegin' AND '$toweekend'");
         $date = $res->fetchAll(PDO::FETCH_ASSOC);
         $count = $res->rowCount();
 
@@ -70,14 +63,14 @@
     $symbol = '';
     $table = '<tr><th class="table_day"></th>'; 
     for($i = 0; $i < 7; $i++) {
-        $slt = getAnyDay($Y_m_d, $i, 'm月d日');
-        $table .= '<th class="'.$Enweek[$i].' table_day">'.$slt.'('.$week[$i].')</th>';
+        $slt = getAnyDay($Y_m_d, (($i + $today_w) % 7), 'm月d日');
+        $table .= '<th class="'.$Enweek[($i + $today_w) % 7].' table_day">'.$slt.'('.$week[($i + $today_w) % 7].')</th>';
     }
     $table .= '</tr>';
     for($i = 0; $i < count($time); $i++) {
         $table .= '<tr><td class="table_time"><span class="time_first">' .substr($time[$i], 0, 6).'</span><span class="time_end">'.substr($time[$i], 6, 10).'</span></td>';
-        for($j = 0; $j < 7; $j++) {
-            $theday = getAnyDay($Y_m_d, $j, 'Y-m-d'); 
+        for($j=0; $j < 7; $j++) {
+            $theday = getAnyDay($Y_m_d, (($j + $today_w) % 7), 'Y-m-d'); 
             $table_class = isBorA($theday);
             if($table_class == 'Past'){
                 $bookingURL = '';            
