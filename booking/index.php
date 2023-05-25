@@ -153,10 +153,10 @@
     }
 
 
-    function booking_all(){ //パワープレイ関数 おかげでグローバルで持ってきてる変数が多い
+    function booking_all(){ //パワープレイ関数 グローバルで持ってきてる変数が多いのなんとかしたい
         global $page_flag, $dayselect, $timeselect, $partselect, $otherpartselect;
         global $select_day, $time, $select_time, $regist_name, $part, $otherpart, $remark, $name, $password_len, $uniq_name, $part_jp, $otherpart_jp, $prime_num;
-        if($page_flag == 1){
+        if($page_flag == 1){ //確認フォーム
             $part_each = NULL;
 
             if(count($part) == 7){
@@ -221,14 +221,14 @@
             </div>
             _HTML_;
         }
-        elseif($page_flag == 2){
+        elseif($page_flag == 2){ //完了フォーム
             echo <<<_HTML_
             <div id="CompleteMain">
                 <h1>完了しました！</h1>
             </div>
             _HTML_;
         }
-        else{
+        else{ //予約フォーム
             echo <<<_HTML_
             <h1 class="title">信州大学軽音楽部 予約フォーム</h1>
             <div id="bookingMain">
@@ -339,7 +339,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><a>予約を修正</a></td>
+                            <td><button type="button" onclick="location>予約を修正</a></td>
                             <td><a>予約を削除</a></td>
                         </tr>
                     </table>
