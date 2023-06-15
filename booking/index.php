@@ -339,7 +339,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><button type="button" onclick="location>予約を修正</a></td>
+                            <td><button type="button" onclick="location.href='http://localhost/shindai_k_on/booking/fix/index.html?id={$date[$i]['booking_id']}'">予約を修正</a></td>
                             <td><a>予約を削除</a></td>
                         </tr>
                     </table>
