@@ -14,6 +14,7 @@
     $dsn = 'mysql:dbname=reservation;host=localhost;charset=utf8';
     $user = 'root';
     $pass = 'Qx76pd3aa';
+    #$pass = "";
 
     $timefile = fopen($localtimecsv, "r");
     $time = fgetcsv($timefile);
